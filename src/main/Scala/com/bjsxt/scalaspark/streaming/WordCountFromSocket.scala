@@ -26,7 +26,7 @@ object WordCountFromSocket {
     //从ssc中获取SparkContext()
 //    val context: SparkContext = ssc.sparkContext
 
-    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("c7node5",9999)
+    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("hadoop103",9999)
     val words: DStream[String] = lines.flatMap(line=>{line.split(" ")})
     val pairWords: DStream[(String, Int)] = words.map(word=>{(word,1)})
     val result: DStream[(String, Int)] = pairWords.reduceByKey((v1, v2)=>{v1+v2})

@@ -21,8 +21,11 @@ object TransformBlackList {
     /**
       * 从实时数据【"hello zhangsan","hello lisi"】中发现 数据的第二位是黑名单人员，过滤掉
       */
-    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("c7node5",9999)
+    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("hadoop103",9999)
     val pairLines: DStream[(String, String)] = lines.map(line=>{(line.split(" ")(1),line)})
+
+    pairLines.print()
+
     val resultDStream: DStream[String] = pairLines.transform(pairRDD => {
       val filterRDD: RDD[(String, String)] = pairRDD.filter(tp => {
         val nameList: List[String] = blackList.value

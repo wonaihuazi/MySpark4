@@ -16,15 +16,15 @@ object WindowOperator {
     conf.setMaster("local[2]")
     val ssc = new StreamingContext(conf,Durations.seconds(5))
     ssc.sparkContext.setLogLevel("Error")
-    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("c7node5",9999)
+    val lines: ReceiverInputDStream[String] = ssc.socketTextStream("hadoop103",9999)
     val words: DStream[String] = lines.flatMap(line=>{line.split(" ")})
     val pairWords: DStream[(String, Int)] = words.map(word=>{(word,1)})
 
     /**
       * 窗口操作普通的机制
       */
-//    val windowResult: DStream[(String, Int)] =
-//      pairWords.reduceByKeyAndWindow((v1:Int, v2:Int)=>{v1+v2},Durations.seconds(15),Durations.seconds(5))
+   // val windowResult: DStream[(String, Int)] =
+    //  pairWords.reduceByKeyAndWindow((v1:Int, v2:Int)=>{v1+v2},Durations.seconds(15),Durations.seconds(5))
 
     /**
       * 窗口操作优化的机制
